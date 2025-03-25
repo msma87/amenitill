@@ -2,33 +2,35 @@
 
 <!-- Section: List of available products -->
 <h2>Available Products</h2>
-<ul>
-  <% @products.each do |product| %>
-    <li>
-      <!-- Display product name and price -->
-      <%= product.name %> - €<%= number_with_precision(product.price, precision: 2) %>
+<div class="cart-block">
+  <ul>
+    <% @products.each do |product| %>
+      <li>
+        <!-- Display product name and price -->
+        <span><%= product.name %> - €<%= number_with_precision(product.price, precision: 2) %></span>
 
-      <!-- Button to add product to cart -->
-      <!-- It sends a POST request to the add_to_cart route with the product code -->
-      <%= button_to "Add to Cart", add_to_cart_path(code: product.code), method: :post %>
-    </li>
-  <% end %>
-</ul>
+        <!-- Button to add product to cart -->
+        <!-- It sends a POST request to the add_to_cart route with the product code -->
+        <%= button_to "Add to Cart", add_to_cart_path(code: product.code), method: :post %>
+      </li>
+    <% end %>
+  </ul>
+</div>
 
 <!-- Section: Cart content -->
 <h2>Your Cart</h2>
-
+<div class="cart-block">
 <% if @cart_items.any? %>
   <ul>
     <% @cart_items.each_with_index do |item, index| %>
       <li>
-        <%= item.name %>
+        <span><%= item.name %></span>
         <%= button_to "Remove", remove_from_cart_path(code: item.code), method: :post, form: { data: { turbo: false } } %>
       </li>
     <% end %>
   </ul>
   <!-- Display the total amount using the calculate_total method -->
-  <strong><%= "€ " + number_with_precision(@total, precision: 2) %></strong>
+  <p><strong><%= "€ " + number_with_precision(@total, precision: 2) %></strong></p>
   <!-- Button to empty the cart -->
   <%= button_to "Empty Cart", empty_cart_path, method: :post, data: { turbo: false } %>
 
