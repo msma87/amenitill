@@ -3,4 +3,3 @@ Product.create([
   { code: 'SR1', name: 'Strawberries', price:  5.00 },
   { code: 'CF1', name: 'Coffee', price:  11.23 }
 ])
-
