@@ -27,7 +27,8 @@
       </li>
     <% end %>
   </ul>
-
+  <!-- Display the total amount using the calculate_total method -->
+  <strong><%= "€ " + number_with_precision(@total, precision: 2) %></strong>
   <!-- Button to empty the cart -->
   <%= button_to "Empty Cart", empty_cart_path, method: :post, data: { turbo: false } %>
 

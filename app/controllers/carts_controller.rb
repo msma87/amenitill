@@ -12,8 +12,10 @@ class CartsController < ApplicationController
     # Loop through each code in the cart
     # Find the product with the matching code
     # Add it to an array
-
     @cart_items = @cart.map { |code| Product.find_by(code: code) }
+
+   # Calculate the total price, applying special pricing rules
+   @total = calculate_total(@cart_items)
   end
 
   # The "add" action is called when the user clicks on the "Add to cart"
@@ -64,7 +66,6 @@ class CartsController < ApplicationController
     redirect_to root_path
   end
 
-
   # The "empty" action is called when the user wants to clear their cart.
   # This action sets the session's cart to an empty array and redirects
   # the user back to the homepage to see the updated cart.
@@ -77,5 +78,63 @@ class CartsController < ApplicationController
 
     # Redirect the user back to the homepage to see the updated cart.
     redirect_to root_path
+  end
+
+  private
+
+  # Calculates the total price of the cart, applying all discount rules
+  def calculate_total(items)
+    # Group items by product code (e.g., all GR1 items together)
+    # This is done so that we can apply the correct discount rules
+    # based on the product type.
+    grouped = items.group_by(&:code)
+
+    # Initialize the total price of the cart to 0
+    total = 0
+
+    # Loop through each group of items
+    grouped.each do |code, group|
+      case code
+      # If the item is Green Tea (GR1), the discount rule is:
+      # Buy-One-Get-One-Free
+      # Example: 2 items = pay 1; 3 items = pay 2
+      when 'GR1'
+        # Calculate the number of items we have to pay for
+        # (i.e., the number of items divided by 2, rounded up)
+        items_to_pay_for = (group.count / 2.0).ceil
+        # Calculate the total cost of the items (items_to_pay_for * price)
+        # and add it to the total
+        total += items_to_pay_for * group.first.price
+
+      # If the item is Strawberries (SR1), the discount rule is:
+      # If buying 3 or more, price drops to €4.50 each
+      when 'SR1'
+        # If the number of items is 3 or more, use the discounted price
+        # of €4.50. Otherwise, use the default price.
+        price = group.count >= 3 ? 4.50 : group.first.price
+        # Calculate the total cost of the items (number of items * price)
+        # and add it to the total
+        total += group.count * price
+
+      # If the item is Coffee (CF1), the discount rule is:
+      # If buying 3 or more, each costs 2/3 of the original price
+      when 'CF1'
+        # If the number of items is 3 or more, use the discounted price
+        # of 2/3 of the original price. Otherwise, use the default price.
+        price = group.count >= 3 ? (group.first.price * 2 / 3).round(2) : group.first.price
+        # Calculate the total cost of the items (number of items * price)
+        # and add it to the total
+        total += group.count * price
+
+      # If any other product is added, use the default price
+      else
+        # Calculate the total cost of the items (number of items * price)
+        # and add it to the total
+        total += group.sum(&:price)
+      end
+    end
+
+    # Round the total to 2 decimal places and return it
+    total.round(2)
   end
 end
