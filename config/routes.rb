@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   root 'carts#index'
 	post 'add_to_cart', to: 'carts#add'
   post 'remove_from_cart', to: 'carts#remove'
+  post 'empty_cart', to: 'carts#empty'
 end
