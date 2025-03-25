@@ -7,22 +7,22 @@ body, h1, h2, ul, li, p {
 }
 
 body {
-  background-color: #f6f6f6;
-  color: #152847;
+  background-color: #F8F9FA;
+  color: #212529;
   padding: 2rem;
 }
 
 h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #152847;
+  color: #605BFF;
 }
 
 h2 {
   font-size: 1.2rem;
   margin-top: 2rem;
   margin-bottom: 1rem;
-  color: #152847;
+  color: #605BFF;
 }
 
 ul {

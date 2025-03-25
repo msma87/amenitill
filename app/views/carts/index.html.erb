@@ -1,40 +1,71 @@
-<h1>AmeniTill 🧾</h1>
+<div class="container py-4">
+  <!-- Header with fictitious logo and brand -->
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 text-primary">🧾 AmeniTill</h1>
+    <span class="badge bg-light text-dark">by Máira</span>
+  </header>
 
-<!-- Section: List of available products -->
-<h2>Available Products</h2>
-<div class="cart-block">
-  <ul>
+  <!-- Section: List of available products -->
+  <h2 class="h5 text-secondary mb-3">Available Products</h2>
+  <div class="row g-3">
     <% @products.each do |product| %>
-      <li>
-        <!-- Display product name and price -->
-        <span><%= product.name %> - €<%= number_with_precision(product.price, precision: 2) %></span>
-
-        <!-- Button to add product to cart -->
-        <!-- It sends a POST request to the add_to_cart route with the product code -->
-        <%= button_to "Add to Cart", add_to_cart_path(code: product.code), method: :post %>
-      </li>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <!-- Row with name on left and price on right -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-dark"><%= product.name %></span>
+              <span class="text-muted">€<%= number_with_precision(product.price, precision: 2) %></span>
+            </div>
+            <!-- Button stays below -->
+            <%= button_to add_to_cart_path(code: product.code), method: :post,
+                  class: 'btn btn-primary btn-sm mt-auto' do %>
+              <i class="bi bi-cart-plus me-1"></i> Add to Cart
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
+
+  <!-- Section: Cart content -->
+<div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+  <h2 class="h5 text-secondary m-0">Your Cart</h2>
+  <% if @cart_items.any? %>
+    <%= button_to empty_cart_path, method: :post,
+          data: { turbo: false },
+          class: 'btn btn-warning btn-sm' do %>
+      <i class="bi bi-x-circle me-1"></i> Empty Cart
+    <% end %>
+  <% end %>
 </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <% if @cart_items.any? %>
+        <ul class="list-group mb-3">
+      <% @cart_items.each_with_index do |item, index| %>
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between align-items-center">
+            <!-- Product name -->
+            <span class="text-dark"><%= item.name %></span>
 
-<!-- Section: Cart content -->
-<h2>Your Cart</h2>
-<div class="cart-block">
-<% if @cart_items.any? %>
-  <ul>
-    <% @cart_items.each_with_index do |item, index| %>
-      <li>
-        <span><%= item.name %></span>
-        <%= button_to "Remove", remove_from_cart_path(code: item.code), method: :post, form: { data: { turbo: false } } %>
-      </li>
-    <% end %>
-  </ul>
-  <!-- Display the total amount using the calculate_total method -->
-  <p><strong><%= "€ " + number_with_precision(@total, precision: 2) %></strong></p>
-  <!-- Button to empty the cart -->
-  <%= button_to "Empty Cart", empty_cart_path, method: :post, data: { turbo: false } %>
-
-<% else %>
-  <!-- Message if the cart is empty -->
-  <p>Your cart is empty.</p>
-<% end %>
+            <!-- Remove button aligned right -->
+            <%= button_to remove_from_cart_path(code: item.code), method: :post,
+                  form: { data: { turbo: false } },
+                  class: 'btn btn-outline-danger btn-sm' do %>
+              <i class="bi bi-trash me-1"></i> Remove
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+        <!-- Display the total amount using the calculate_total method -->
+        <!-- Total: styled for emphasis -->
+        <div class="alert alert-primary fw-bold text-center">Total: <%= "€ " + number_with_precision(@total, precision: 2) %>
+        </div>
+      <% else %>
+        <p class="text-muted">Your cart is empty.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
