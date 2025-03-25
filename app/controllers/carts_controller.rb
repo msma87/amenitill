@@ -12,4 +12,11 @@ class CartsController < ApplicationController
     session[:cart] << params[:code] # Add product code to session cart
     redirect_to root_path # Redirect back to the homepage to see the updated cart
   end
+
+    # Remove one occurrence of the product code from the cart
+  def remove
+    session[:cart] ||= []
+    session[:cart].delete_at(session[:cart].index(params[:code]) || session[:cart].length)
+    redirect_to root_path
+  end
 end

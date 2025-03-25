@@ -23,6 +23,9 @@
     <% @cart_items.each do |item| %>
       <!-- Display each item in the cart -->
       <li><%= item.name %></li>
+        <!-- Remove button: sends POST to remove_from_cart with the product code -->
+        <%= button_to 'Remove', remove_from_cart_path(code: item.code), method: :post, form: { data: { turbo: false } } %>
+      </li>
     <% end %>
   </ul>
 <% else %>
