@@ -1,0 +1,31 @@
+<h1>AmeniTill 🧾</h1>
+
+<!-- Section: List of available products -->
+<h2>Available Products</h2>
+<ul>
+  <% @products.each do |product| %>
+    <li>
+      <!-- Display product name and price -->
+      <%= product.name %> - €<%= product.price %>
+
+      <!-- Button to add product to cart -->
+      <!-- It sends a POST request to the add_to_cart route with the product code -->
+      <%= button_to 'Add to Cart', add_to_cart_path(code: product.code), method: :post %>
+    </li>
+  <% end %>
+</ul>
+
+<!-- Section: Cart content -->
+<h2>Your Cart</h2>
+
+<% if @cart_items.any? %>
+  <ul>
+    <% @cart_items.each do |item| %>
+      <!-- Display each item in the cart -->
+      <li><%= item.name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <!-- Message if the cart is empty -->
+  <p>Your cart is empty.</p>
+<% end %>
