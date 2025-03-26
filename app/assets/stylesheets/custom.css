@@ -72,14 +72,6 @@ button:hover, input[type="submit"]:hover {
 }
 
 
-/* Cart block */
-.cart-block {
-  background: white;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  margin-top: 1rem;
-}
 
 /* Responsividade */
 @media (max-width: 600px) {
