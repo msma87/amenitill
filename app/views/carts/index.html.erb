@@ -1,7 +1,7 @@
 <div class="container py-4">
   <!-- Header with fictitious logo and brand -->
   <header class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 text-primary">🧾 AmeniTill</h1>
+    <h1 class="h3" style="color: #5C8EF1;">🧾 AmeniTill</h1>
     <span class="badge bg-light text-dark">by Máira</span>
   </header>
 
@@ -11,33 +11,41 @@
     <% @products.each do |product| %>
       <div class="col-12 col-sm-6 col-lg-4">
         <div class="card h-100 shadow-sm">
-          <div class="card-body d-flex flex-column">
             <!-- Row with name on left and price on right -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-dark">
-                <%# Escolher ícone com base no código do produto %>
-                <% icon_class =
-                    case product.code
-                    when 'GR1' then 'bi-cup-straw'
-                    when 'SR1' then 'bi-heart'
-                    when 'CF1' then 'bi-cup-hot'
-                    else 'bi-box'
-                    end %>
-                <i class="bi <%= icon_class %> me-2 text-secondary"></i>
-                <%= product.name %>
-              </span>
-              <span class="text-muted">€<%= number_with_precision(product.price, precision: 2) %></span>
+            <div class="card-body d-flex flex-column">
+              <!-- Promo badge -->
+              <% if product.code == 'GR1' %>
+                <span class="badge bg-success mb-2"><i class="bi bi-gift me-1"></i> Buy 1 Get 1 Free</span>
+              <% elsif product.code == 'SR1' %>
+                <span class="badge bg-success mb-2"><i class="bi bi-gift me-1"></i> €4.50 each on 3+</span>
+              <% elsif product.code == 'CF1' %>
+                <span class="badge bg-success mb-2"><i class="bi bi-gift me-1"></i> 33% off on 3+</span>
+              <% end %>
+              <!-- Name and price aligned -->
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-dark d-flex align-items-center">
+                  <% icon_class =
+                      case product.code
+                      when 'GR1' then 'bi-cup-straw'
+                      when 'SR1' then 'bi-heart'
+                      when 'CF1' then 'bi-cup-hot'
+                      else 'bi-box'
+                      end %>
+                  <i class="bi <%= icon_class %> me-2 text-secondary fs-5"></i>
+                  <%= product.name %>
+                </span>
+                <span class="text-muted">€<%= number_with_precision(product.price, precision: 2) %></span>
+              </div>
+              <!-- Button stays below -->
+              <%= button_to add_to_cart_path(code: product.code), method: :post,
+                    class: 'btn btn-primary btn-sm mt-auto' do %>
+                <i class="bi bi-cart-plus me-1"></i> Add to Cart
+              <% end %>
             </div>
-            <!-- Button stays below -->
-            <%= button_to add_to_cart_path(code: product.code), method: :post,
-                  class: 'btn btn-primary btn-sm mt-auto' do %>
-              <i class="bi bi-cart-plus me-1"></i> Add to Cart
-            <% end %>
           </div>
         </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
   <!-- Section: Cart content -->
   <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
     <h2 class="h5 text-secondary m-0">Your Cart</h2>
