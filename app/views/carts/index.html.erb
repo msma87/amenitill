@@ -57,7 +57,7 @@
             <li class="list-group-item">
               <div class="row align-items-center">
                 <!-- Coluna: Ícone + Nome + Quantidade -->
-                <div class="col-12 col-md-5 d-flex align-items-start">
+                <div class="col-12 col-md-6 d-flex align-items-center">
                   <% icon_class =
                       case item[:product].code
                       when 'GR1' then 'bi-cup-straw'
@@ -65,36 +65,30 @@
                       when 'CF1' then 'bi-cup-hot'
                       else 'bi-box'
                       end %>
-
                   <i class="bi <%= icon_class %> me-2 text-secondary fs-5"></i>
                   <div>
                     <strong><%= item[:product].name %></strong><br>
                     <small class="text-muted">Quantity: <%= item[:quantity] %></small>
                   </div>
                 </div>
-
-                <!-- Coluna: Valores -->
-                <div class="col-6 col-md-4 text-end">
-                  <p class="mb-1">Subtotal: €<%= number_with_precision(item[:subtotal], precision: 2) %></p>
+                <!-- Coluna: Subtotal e Desconto -->
+                <div class="col-6 col-md-4 text-end mt-2 mt-md-0">
                   <% if item[:discount] > 0 %>
                     <p class="text-success mb-0">Discount: -€<%= number_with_precision(item[:discount], precision: 2) %></p>
                   <% end %>
+                  <p class="mb-1">Subtotal: €<%= number_with_precision(item[:subtotal], precision: 2) %></p>
                 </div>
-
-                <!-- Coluna: Botão remover -->
-                <div class="col-6 col-md-3 text-end">
+                <!-- Coluna: Botão Remover -->
+                <div class="col-6 col-md-2 text-end mt-2 mt-md-0">
                   <%= button_to remove_from_cart_path(code: item[:product].code), method: :post,
-                        form: { data: { turbo: false } },
-                        class: 'btn btn-outline-danger btn-sm' do %>
-                    <i class="bi bi-trash me-1"></i> Remove
+                        class: 'btn btn-outline-danger btn-sm', form: { data: { turbo: false } } do %>
+                    <i class="bi bi-trash me-1"></i>
                   <% end %>
                 </div>
               </div>
             </li>
           <% end %>
         </ul>
-
-
         <!-- Display the total amount using the calculate_total method -->
         <!-- Total: styled for emphasis -->
         <div class="alert alert-primary fw-bold text-center">Total: <%= "€ " + number_with_precision(@total, precision: 2) %>
