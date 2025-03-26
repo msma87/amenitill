@@ -1,4 +1,4 @@
-# 🧾 AmeniTill – Cash Register App (Amenitiz Tech Challenge)
+# 🧾 AmeniTill – Cash Register App (Tech Challenge)
 
 AmeniTill is a simple, modern and responsive web app built with Ruby on Rails for the a Tech Challenge. It simulates a cash register that allows users to add products to a cart and automatically applies dynamic pricing rules based on promotions.
 
