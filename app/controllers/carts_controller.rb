@@ -8,14 +8,24 @@ class CartsController < ApplicationController
     # The cart is a list of product codes in the session
     @cart = session[:cart] || []
 
+    @cart_grouped = @cart.group_by(&:itself).transform_values(&:count)
+
     # Get an array of all the products in the cart
     # Loop through each code in the cart
     # Find the product with the matching code
     # Add it to an array
-    @cart_items = @cart.map { |code| Product.find_by(code: code) }
+    @cart_items = @cart_grouped.map do |code, quantity|
+      product = Product.find_by(code: code)
+      {
+        product: product,
+        quantity: quantity,
+        subtotal: product.price * quantity,
+        discount: calculate_discount(product.code, quantity, product.price)
+      }
+    end
 
    # Calculate the total price, applying special pricing rules
-   @total = calculate_total(@cart_items)
+   @total = @cart_items.sum { |item| item[:subtotal] - item[:discount] }
   end
 
   # The "add" action is called when the user clicks on the "Add to cart"
@@ -83,6 +93,22 @@ class CartsController < ApplicationController
   private
 
   # Calculates the total price of the cart, applying all discount rules
+  def calculate_discount(code, quantity, price)
+    case code
+    when 'GR1'
+      # Buy one, get one free
+      (quantity / 2) * price
+    when 'SR1'
+      # Bulk discount if 3 or more
+      quantity >= 3 ? (price - 4.50) * quantity : 0
+    when 'CF1'
+      # Coffee discount if 3 or more
+      quantity >= 3 ? (price * (1/3.0) * quantity).round(2) : 0
+    else
+      0
+    end
+  end
+
   def calculate_total(items)
     # Group items by product code (e.g., all GR1 items together)
     # This is done so that we can apply the correct discount rules
