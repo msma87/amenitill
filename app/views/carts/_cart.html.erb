@@ -1,0 +1,66 @@
+<!-- Partial: _cart.html.erb -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h5 text-secondary m-0">Your Cart</h2>
+
+  <% if cart_items.any? %>
+    <%= button_to empty_cart_path, method: :post,
+          class: 'btn btn-warning btn-sm',
+          style: "background-color: #F3D77F; border-color: #F3D77F;" do %>
+      <i class="bi bi-x-circle me-1"></i> Empty Cart
+    <% end %>
+  <% end %>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <% if cart_items.any? %>
+      <ul class="list-group mb-3">
+        <% cart_items.each do |item| %>
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-6 col-md-6 d-flex align-items-start">
+                <% icon_class =
+                    case item[:product].code
+                    when 'GR1' then 'bi-cup-straw'
+                    when 'SR1' then 'bi-heart'
+                    when 'CF1' then 'bi-cup-hot'
+                    else 'bi-box'
+                    end %>
+                <i class="bi <%= icon_class %> me-2 text-secondary fs-5 mt-1"></i>
+                <div>
+                  <strong><%= item[:product].name %></strong><br>
+                  <small class="text-muted">Quantity: <%= item[:quantity] %></small>
+                </div>
+              </div>
+              <div class="col-6 col-md-4 text-end">
+                <p class="mb-1">Subtotal: €<%= number_with_precision(item[:subtotal], precision: 2) %></p>
+                <% if item[:discount] > 0 %>
+                  <p class="text-success mb-0">Discount: -€<%= number_with_precision(item[:discount], precision: 2) %></p>
+                <% end %>
+              </div>
+              <div class="col-md-2 text-end d-none d-md-block">
+                <%= button_to remove_from_cart_path(code: item[:product].code), method: :post,
+                      class: 'btn btn-outline-danger btn-sm' do %>
+                  <i class="bi bi-trash me-1"></i> Remove
+                <% end %>
+              </div>
+              <div class="col-12 mt-2 d-md-none text-end">
+                <%= button_to remove_from_cart_path(code: item[:product].code), method: :post,
+                      class: 'btn btn-outline-danger btn-sm w-100' do %>
+                  <i class="bi bi-trash me-1"></i> Remove
+                <% end %>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+
+      <!-- Cart total -->
+      <div class="alert alert-primary fw-bold text-center">
+        Total: €<%= number_with_precision(total, precision: 2) %>
+      </div>
+    <% else %>
+      <p class="text-muted">Your cart is empty.</p>
+    <% end %>
+  </div>
+</div>

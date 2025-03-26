@@ -1,95 +1,106 @@
-/* Reset básico */
-body, h1, h2, ul, li, p {
-  margin: 0;
-  padding: 0;
-  font-family: 'Helvetica Neue', sans-serif;
-  box-sizing: border-box;
-}
 
-body {
-  background-color: #F8F9FA;
-  color: #212529;
-  padding: 2rem;
-}
+/* ===============================
+   Global styles and reset
+   =============================== */
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #605BFF;
-}
+   body, h1, h2, ul, li, p {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    box-sizing: border-box;
+  }
 
-h2 {
-  font-size: 1.2rem;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  color: #605BFF;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 1rem;
-}
-
-li {
-  margin-bottom: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-strong {
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-/* Botões */
-button, input[type="submit"] {
-  background-color: #152847;
-  color: #ffffff;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  font-size: 0.9rem;
-}
-
-button:hover, input[type="submit"]:hover {
-  background-color: #1f3a60;
-}
-
-.btn-amenitill {
-  background-color: #5C8EF1;
-  color: white;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.btn-amenitill:hover {
-  background-color: #4b7de0;
-}
-
-
-
-/* Responsividade */
-@media (max-width: 600px) {
   body {
-    padding: 1rem;
+    background-color: #F8F9FA; /* Light neutral background for readability */
+    color: #212529;            /* Bootstrap's default text color */
+    padding: 2rem;
+  }
+
+  h1, h2 {
+    color: #605BFF; /* Brand primary color */
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
   }
 
   li {
-    flex-direction: column;
-    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
+  strong {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  /* ===============================
+     Buttons
+     =============================== */
+
   button, input[type="submit"] {
-    margin-top: 0.4rem;
-    width: 100%;
+    background-color: #152847;
+    color: #ffffff;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    font-size: 0.9rem;
   }
-  .btn-outline-danger.btn-sm {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
+
+  button:hover, input[type="submit"]:hover {
+    background-color: #1f3a60;
   }
-}
+
+  /* Custom brand button style */
+  .btn-amenitill {
+    background-color: #5C8EF1;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-amenitill:hover {
+    background-color: #4b7de0;
+  }
+
+  /* ===============================
+     Responsive adjustments
+     =============================== */
+  @media (max-width: 600px) {
+    body {
+      padding: 1rem;
+    }
+
+    li {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    button, input[type="submit"] {
+      margin-top: 0.4rem;
+      width: 100%;
+    }
+
+    .btn-outline-danger.btn-sm {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.4rem;
+    }
+  }

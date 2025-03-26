@@ -1,122 +1,67 @@
+<!-- app/views/carts/index.html.erb -->
+
 <div class="container py-4">
-  <!-- Header with fictitious logo and brand -->
+  <!-- App Header -->
   <header class="d-flex justify-content-center align-items-center mb-4">
     <h1 class="display-4 fw-bold text-center" style="color: #5C8EF1;">
       <i class="bi bi-receipt"></i> AmeniTill
     </h1>
   </header>
+
   <!-- Section: List of available products -->
   <h2 class="h5 text-secondary mb-3">Available Products</h2>
   <div class="row g-3">
     <% @products.each do |product| %>
       <div class="col-12 col-sm-6 col-lg-4">
         <div class="card h-100 shadow-sm">
-            <!-- Row with name on left and price on right -->
-            <div class="card-body d-flex flex-column">
-              <!-- Promo badge -->
-              <% if product.code == 'GR1' %>
-                <span class="badge" style="background-color: #C2F4B9; color: #212529;" mb-2"><i class="bi bi-gift me-1"></i> Buy 1 Get 1 Free</span>
-              <% elsif product.code == 'SR1' %>
-                <span class="badge" style="background-color: #C2F4B9; color: #212529;" mb-2"><i class="bi bi-box2-heart me-1"></i> €4.50 each on 3+</span>
-              <% elsif product.code == 'CF1' %>
-                <span class="badge" style="background-color: #C2F4B9; color: #212529;" mb-2"><i class="bi bi-cup-hot me-1"></i> 33% off on 3+</span>
-              <% end %>
-              <!-- Name and price aligned -->
-              <div class="d-flex justify-content-between align-items-center mb-3 mt-1">
-                <span class="text-dark d-flex align-items-center">
-                  <% icon_class =
-                      case product.code
-                      when 'GR1' then 'bi-cup-straw'
-                      when 'SR1' then 'bi-heart'
-                      when 'CF1' then 'bi-cup-hot'
-                      else 'bi-box'
-                      end %>
-                  <i class="bi <%= icon_class %> me-2 text-secondary fs-5"></i>
-                  <%= product.name %>
-                </span>
-                <span class="text-muted">€<%= number_with_precision(product.price, precision: 2) %></span>
-              </div>
-              <!-- Button stays below -->
-              <%= button_to add_to_cart_path(code: product.code), method: :post,
-              class: 'btn btn-amenitill btn-sm mt-auto' do %>
-              <i class="bi bi-cart-plus me-1"></i> Add to Cart
-              <% end %>
+          <div class="card-body d-flex flex-column">
+
+            <!-- Promo badge based on product code -->
+            <% if product.code == 'GR1' %>
+              <span class="badge mb-2" style="background-color: #C2F4B9; color: #212529;">
+                <i class="bi bi-gift me-1"></i> Buy 1 Get 1 Free
+              </span>
+            <% elsif product.code == 'SR1' %>
+              <span class="badge mb-2" style="background-color: #C2F4B9; color: #212529;">
+                <i class="bi bi-box2-heart me-1"></i> €4.50 each on 3+
+              </span>
+            <% elsif product.code == 'CF1' %>
+              <span class="badge mb-2" style="background-color: #C2F4B9; color: #212529;">
+                <i class="bi bi-cup-hot me-1"></i> 33% off on 3+
+              </span>
+            <% end %>
+
+            <!-- Product title and price -->
+            <div class="d-flex justify-content-between align-items-center mb-3 mt-1">
+              <span class="text-dark d-flex align-items-center">
+                <% icon_class =
+                    case product.code
+                    when 'GR1' then 'bi-cup-straw'
+                    when 'SR1' then 'bi-heart'
+                    when 'CF1' then 'bi-cup-hot'
+                    else 'bi-box'
+                    end %>
+                <i class="bi <%= icon_class %> me-2 text-secondary fs-5"></i>
+                <%= product.name %>
+              </span>
+              <span class="text-muted">€<%= number_with_precision(product.price, precision: 2) %></span>
             </div>
+
+            <!-- Add to cart button -->
+            <%= button_to add_to_cart_path(code: product.code), method: :post,
+      class: 'btn btn-amenitill btn-sm w-100 mt-auto' do %>
+  <i class="bi bi-cart-plus me-1"></i> Add to Cart
+<% end %>
+
+
           </div>
         </div>
-      <% end %>
-    </div>
-  <!-- Section: Cart content -->
-    <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-      <h2 class="h5 text-secondary m-0">Your Cart</h2>
-      <% if @cart_items.any? %>
-        <%= button_to empty_cart_path, method: :post,
-              data: { turbo: false },
-              class: 'btn btn-warning btn-sm', style: "background-color: #F3D77F; border-color: #F3D77F;" do %>
-          <i class="bi bi-x-circle me-1"></i> Empty Cart
-        <% end %>
-      <% end %>
-    </div>
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <% if @cart_items.any? %>
-          <ul class="list-group mb-3">
-  <% @cart_items.each_with_index do |item, index| %>
-    <li class="list-group-item">
-      <div class="row align-items-center">
-
-        <!-- Coluna: Ícone + Nome + Quantidade (mobile + desktop) -->
-        <div class="col-6 col-md-6 d-flex align-items-start">
-          <% icon_class =
-              case item[:product].code
-              when 'GR1' then 'bi-cup-straw'
-              when 'SR1' then 'bi-heart'
-              when 'CF1' then 'bi-cup-hot'
-              else 'bi-box'
-              end %>
-          <i class="bi <%= icon_class %> me-2 text-secondary fs-5 mt-1"></i>
-          <div>
-            <strong><%= item[:product].name %></strong><br>
-            <small class="text-muted">Quantity: <%= item[:quantity] %></small>
-          </div>
-        </div>
-
-        <!-- Coluna: Subtotal e Desconto (à direita mesmo no mobile) -->
-        <div class="col-6 col-md-4 text-end">
-          <p class="mb-1">Subtotal: €<%= number_with_precision(item[:subtotal], precision: 2) %></p>
-          <% if item[:discount] > 0 %>
-            <p class="text-success mb-0">Discount: -€<%= number_with_precision(item[:discount], precision: 2) %></p>
-          <% end %>
-        </div>
-
-        <!-- Botão Remove no desktop -->
-        <div class="col-md-2 text-end d-none d-md-block">
-          <%= button_to remove_from_cart_path(code: item[:product].code), method: :post,
-                class: 'btn btn-outline-danger btn-sm', form: { data: { turbo: false } } do %>
-            <i class="bi bi-trash me-1"></i> Remove
-          <% end %>
-        </div>
-
-        <!-- Botão Remove no mobile (embaixo) -->
-        <div class="col-12 mt-2 d-md-none text-end">
-          <%= button_to remove_from_cart_path(code: item[:product].code), method: :post,
-                class: 'btn btn-outline-danger btn-sm w-100', form: { data: { turbo: false } } do %>
-            <i class="bi bi-trash me-1"></i> Remove
-          <% end %>
-        </div>
-
       </div>
-    </li>
-  <% end %>
-</ul>
-
-          <!-- Display the total amount using the calculate_total method -->
-          <!-- Total: styled for emphasis -->
-          <div class="alert alert-primary fw-bold text-center">Total: <%= "€ " + number_with_precision(@total, precision: 2) %>
-          </div>
-        <% else %>
-          <p class="text-muted">Your cart is empty.</p>
-        <% end %>
-      </div>
-    </div>
+    <% end %>
   </div>
+
+  <!-- Section: Cart content wrapped for Turbo Stream -->
+  <div id="cart" class="mt-5">
+    <%= render partial: "cart", locals: { cart_items: @cart_items, total: @total } %>
+  </div>
+</div>
