@@ -60,6 +60,18 @@ button:hover, input[type="submit"]:hover {
   background-color: #1f3a60;
 }
 
+.btn-amenitill {
+  background-color: #5C8EF1;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-amenitill:hover {
+  background-color: #4b7de0;
+}
+
+
 /* Cart block */
 .cart-block {
   background: white;
@@ -83,5 +95,9 @@ button:hover, input[type="submit"]:hover {
   button, input[type="submit"] {
     margin-top: 0.4rem;
     width: 100%;
+  }
+  .btn-outline-danger.btn-sm {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
   }
 }
